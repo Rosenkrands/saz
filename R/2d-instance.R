@@ -1,4 +1,5 @@
 #' @import tidyverse ggvoronoi
+#' @importFrom magrittr "%>%"
 library(tidyverse)
 library(ggvoronoi)
 
