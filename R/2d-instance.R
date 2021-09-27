@@ -15,7 +15,7 @@ generate_2d_instance <- function(
   x <- runif(no_of_points, min = interval["min"], max = interval["max"])
   y <- runif(no_of_points, min = interval["min"], max = interval["max"])
   arrival_rate <- round(runif(no_of_points, min = 1, max = 3))
-  data <- tibble::tibble(
+  data <- tidyverse::tibble(
     "Demand point id" = id,
     "x" = x,
     "y" = y,
