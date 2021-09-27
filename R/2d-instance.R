@@ -98,7 +98,7 @@ plot_2d_instance <- function(instance, closest) {
   ) +
     ggvoronoi::geom_voronoi(
       data = vor_data,
-      aes(x.center, y.center, fill = `Center id`),
+      ggplot2::aes(x.center, y.center, fill = `Center id`),
       alpha = .25,
       # geom="path",
       outline = data.frame(
@@ -108,14 +108,14 @@ plot_2d_instance <- function(instance, closest) {
     ) +
     ggvoronoi::stat_voronoi(
       data = vor_data,
-      aes(x.center, y.center),
+      ggplot2::aes(x.center, y.center),
       geom="path",
       outline = data.frame(
         x = 1.1*c(-10,-10,10,10),
         y = 1.1*c(-10,10,10,-10)
       )
     ) +
-    ggplot2::geom_point(aes(
+    ggplot2::geom_point(ggplot2::aes(
       x, y,
       # label = `Arrival rate`,
       color = `Center id`,
