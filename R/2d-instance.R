@@ -92,8 +92,8 @@ plot_2d_instance <- function(instance, closest) {
 
   ggplot2::ggplot(
     instance$data %>%
-      inner_join(closest$assignment, by="Demand point id") %>%
-      mutate(`Center id` = as.character(`Center id`),
+      dplyr::inner_join(closest$assignment, by="Demand point id") %>%
+      dplyr::mutate(`Center id` = as.character(`Center id`),
              `Arrival rate` = as.character(`Arrival rate`))
   ) +
     ggvoronoi::geom_voronoi(
