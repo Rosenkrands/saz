@@ -75,7 +75,7 @@ solve_centroid <- function(instance, no_of_centers = 4) {
   objective <- instance$data %>%
     dplyr::select(`Demand point id`, `Arrival rate`) %>%
     dplyr::inner_join(
-      select(assignment, `Center id`, `Demand point id`),
+      dplyr::select(assignment, `Center id`, `Demand point id`),
       by = "Demand point id"
     ) %>%
     dplyr::group_by(`Center id`) %>%
