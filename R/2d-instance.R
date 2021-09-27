@@ -1,13 +1,14 @@
+#' @import tidyverse ggvoronoi
 library(tidyverse)
 library(ggvoronoi)
 
 euclid_norm <- function(x) sqrt(sum(x^2))
 
 #' Generate 2d instance
-#' 
+#'
 #' @export
 generate_2d_instance <- function(
-  no_of_points = 50, 
+  no_of_points = 50,
   interval = c("min" = -10, "max" = 10)
 ) {
   id <- 1:no_of_points
@@ -16,29 +17,30 @@ generate_2d_instance <- function(
   arrival_rate <- round(runif(no_of_points, min = 1, max = 3))
   data <- tibble(
     "Demand point id" = id,
-    "x" = x, 
-    "y" = y, 
+    "x" = x,
+    "y" = y,
     "Arrival rate" = arrival_rate
   )
   results <- list("data" = data, "interval" = interval)
   return(results)
 }
 
+#' @export
 solve_centroid <- function(instance, no_of_centers = 4) {
   # place centroid randomly
   id <- 1:no_of_centers
   x <- runif(
-    no_of_centers, 
+    no_of_centers,
     min = instance$interval["min"],
     max = instance$interval["max"]
   )
   y <- runif(
-    no_of_centers, 
+    no_of_centers,
     min = instance$interval["min"],
     max = instance$interval["max"]
   )
   centers <- tibble("Center id" = id, "x" = x, "y" = y)
-  
+
   # for each demand point find the closest center
   no_of_rows <- nrow(centers)*nrow(instance$data)
   center_point <- integer(no_of_rows)
@@ -55,7 +57,7 @@ solve_centroid <- function(instance, no_of_centers = 4) {
           pull(instance$data[j, "x"] - centers[i, "x"]),
           pull(instance$data[j, "y"] - centers[i, "y"])
         )
-      ) 
+      )
     }
   }
   distances <- tibble(
@@ -80,12 +82,13 @@ solve_centroid <- function(instance, no_of_centers = 4) {
   return(list("assignment" = assignment, "objective" = objective))
 }
 
+#' @export
 plot_2d_instance <- function(instance, closest) {
-  vor_data <- closest$assignment %>% 
+  vor_data <- closest$assignment %>%
     select(`Center id`, x.center, y.center) %>%
     distinct() %>%
     mutate(`Center id` = as.character(`Center id`))
-    
+
   ggplot(
     instance$data %>%
       inner_join(closest$assignment, by="Demand point id") %>%
@@ -112,9 +115,9 @@ plot_2d_instance <- function(instance, closest) {
       )
     ) +
     geom_point(aes(
-      x, y, 
+      x, y,
       # label = `Arrival rate`,
-      color = `Center id`, 
+      color = `Center id`,
       # shape = `Arrival rate`
     )) +
     theme_void() +
